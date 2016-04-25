@@ -19,8 +19,8 @@ url = 'http://api.openweathermap.org/data/2.5/station/find'
 APIKey = ''
 payload = {'lat': '40.42','lon': '-86.91', 'cnt': 9, 'APPID': APIKey}
 stations = []
-log = open('logs.txt' , 'a')
 while (1):
+        log = open('logs.txt' , 'a')
 	r = requests.get(url, params=payload)
 
 	#add stations json data to an array if it doesn't have 9 already
@@ -28,7 +28,7 @@ while (1):
 		for i in range(9):
 			stations.append(r.json()[i])
 	#else, replace first 9 with the new data
-	else: 
+	else:
 		for i in range(9):
 			stations[i] = r.json()[i]
 
@@ -70,16 +70,17 @@ while (1):
 
 	log.write(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\n")
 	for i in range(9):
-		try: 
+		try:
 			print stations[i]['last']['clouds'][0]['condition'],;# "cloud",
 			log.write("" + stations[i]['last']['clouds'][0]['condition']+ " ")
 	    	except KeyError: pass
-		try: 
+		try:
 			print stations[i]['last']['rain']['1h'],# "rain",
 			log.write("" + str(stations[i]['last']['rain']['1h']) + " ")
 	    	except KeyError: pass
-	    	
+
 	    	if (i % 3 == 2):
 	    		log.write('\n')
 	    		print
+        log.close()
 	time.sleep(900)
