@@ -2,15 +2,22 @@ import requests
 import json
 import math
 import time
+import sys
+
 url = 'http://api.openweathermap.org/data/2.5/station/find'
 APIKey = ''
-latitude = '40.42'
-longitude = '-86.91'
+latitude = ''
+longitude = ''
 payload = {'lat': latitude,'lon': longitude, 'cnt': 100, 'APPID': APIKey}
 
+if (len(sys.argv) == 2 and sys.argv[1] == 'log'):
+	toLog = 1
+else: toLog = 0
+
 while (1):
-	log = open('logs.txt' , 'a')
-	log.write(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\n")
+	if(toLog):
+		log = open('logs.txt' , 'a')
+		log.write(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()) + "\n")
 	print time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
 	r = requests.get(url, params=payload)
 
@@ -59,13 +66,16 @@ while (1):
 	#	print "(" + str(lon) + "," + str(lat) + ")"# "Distance:", distance
 
 	for i in range(9):
-		log.write(str(array[i]['last']['rain']['1h']))
+		if (toLog):
+			log.write(str(array[i]['last']['rain']['1h']))
 		print array[i]['last']['rain']['1h'],
 		if (i % 3 == 2):
-			log.write('\n')
+			if (toLog):
+				log.write('\n')
 			print
 	print
-	log.close()
+	if (toLog):
+		log.close()
 	time.sleep(15)
 
 
