@@ -4,6 +4,6 @@ It is currently a work in progress. I have not tested any locations other than W
 work in other locations, whilst dynamically sorting the 9 closest stations into their appropriate locations, given the right
 location.
 
-This program will log data to a logs.txt file, every 15 minutes.
+If 'log' is passed as an argument, this program will log data to a logs.txt file every 15 minutes.
 
 # You must use your own OpenWeatherMap API Key!

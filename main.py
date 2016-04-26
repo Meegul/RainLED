@@ -76,6 +76,6 @@ while (1):
 	print
 	if (toLog):
 		log.close()
-	time.sleep(15)
+	time.sleep(900)
 
 
