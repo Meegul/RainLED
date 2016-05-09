@@ -10,6 +10,9 @@ latitude = ''
 longitude = ''
 payload = {'lat': latitude,'lon': longitude, 'cnt': 50, 'APPID': APIKey}
 
+def shouldTurnOn(rain):
+    return 1 if rain != 0 else 0
+
 if (len(sys.argv) == 2 and sys.argv[1] == 'log'):
 	toLog = 1
 else: toLog = 0
@@ -90,8 +93,8 @@ while (1):
         #outputs final results
 	for i in range(25):
 	    if (toLog):
-	        log.write(str(array[i]['last']['rain']['1h']))
-            print (str(1) if array[i]['last']['rain']['1h'] != 0 else str(0)),
+                log.write(str(shouldTurnOn(float(array[i]['last']['rain']['1h']))))
+            print (str(shouldTurnOn(float(array[i]['last']['rain']['1h'])))),
 	    if (i % 5 == 4):
 	        if (toLog):
                     log.write('\n')
