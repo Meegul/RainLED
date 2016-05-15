@@ -4,19 +4,34 @@ import math
 import time
 import sys
 
-url = 'http://api.openweathermap.org/data/2.5/station/find'
-APIKey = ''
-latitude = ''
-longitude = ''
-payload = {'lat': latitude,'lon': longitude, 'cnt': 50, 'APPID': APIKey}
+#Debugging function that prints each rainstation's lats and lons
+def printCoords(array):
+    for i in array:
+        lat = i['station']['coord']['lat']
+	lon = i['station']['coord']['lon']
+	print "(" + str(lat) + "," + str(lon) + ")"
 
+#Takes rain data and determines if an LED should turn on
 def shouldTurnOn(rain):
     return 1 if rain != 0 else 0
 
+#-----CONFIGURATION-VARIABLES-----#
+#Configure these to suit your needs
+APIKey = ''
+latitude = ''
+longitude = ''
+#---------------------------------#
+
+payload = {'lat': latitude,'lon': longitude, 'cnt': 50, 'APPID': APIKey}
+url = 'http://api.openweathermap.org/data/2.5/station/find'
+
+#Determines whether the user specified whether the program
+#should log the output to logs.txt
 if (len(sys.argv) == 2 and sys.argv[1] == 'log'):
 	toLog = 1
 else: toLog = 0
 
+#Primary loop that continues until a keyboard interrupt occurs
 while (1):
 	if(toLog):
 		log = open('logs.txt' , 'a')
@@ -60,7 +75,7 @@ while (1):
             array.append(-1)
             smallestDistances.append(100)
 
-	#Chooses stations with distances closest to:
+        #Chooses a station closest to each location shown here:
 	#(-100km, +100km) (-50km, +100km) (+0km, +100km) (+50km, +100km) (+100km, +100km)
         #(-100km, +50km)  (-50km, +50km)  (+0km, +50km)  (+50km, +50km)  (+100km, +50km)
 	#(-100km, +0km)   (-50km, +0km)   (+0km, +0km)   (+50km, +0km)   (+100km, +0km)
@@ -75,22 +90,11 @@ while (1):
 				x = lon - float(longitude) - n*.5 + 1
 				y = lat - float(latitude) + i*.5 - 1
                                 distance = math.sqrt(pow(x, 2) + pow(y, 2))
-                                #print "Index: " + str(index),
-                                #print "x: " + str(x),
-                                #print "y: " + str(y),
-                                #print "distance: " + str(distance)
 				if (distance < smallestDistances[index]):
 					array[index] = q;
 					smallestDistances[index] = distance
 
-        #prints selected stations' locations
-        #for i in array:
-        #       lat = i['station']['coord']['lat']
-	#	lon = i['station']['coord']['lon']
-	#	print "(" + str(lat) + "," + str(lon) + ")"
-
-
-        #outputs final results
+        #Outputs final results
 	for i in range(25):
 	    if (toLog):
                 log.write(str(shouldTurnOn(float(array[i]['last']['rain']['1h']))))
@@ -102,5 +106,6 @@ while (1):
 	print
 	if (toLog):
 		log.close()
-	#waits 15 minutes
+
+        #waits 15 minutes
         time.sleep(900)
