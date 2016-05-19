@@ -13,7 +13,7 @@ def printCoords(array):
 
 #Takes rain data and determines if an LED should turn on
 def shouldTurnOn(rain):
-    return 1 if rain > .5 else 0
+    return 1 if rain > .1 else 0
 
 #-----CONFIGURATION-VARIABLES-----#
 #Configure these to suit your needs
@@ -118,13 +118,13 @@ while (1):
                                 index = i*dimension + n
 				x = lon - float(longitude) - n*dif + 1
 				y = lat - float(latitude) + i*dif - 1
-                                distance = math.sqrt(pow(x, 2) + pow(y, 2))
+                                distance = math.sqrt(x**2 + y**2)
 				if (distance < smallestDistances[index]):
 					array[index] = q;
 					smallestDistances[index] = distance
 
         #Outputs final results
-	for i in range(pow(dimension, 2)):
+	for i in range(dimension**2):
 	    if (toLog):
                 log.write(str(shouldTurnOn(float(array[i]['last']['rain']['1h']))))
             print (str(shouldTurnOn(float(array[i]['last']['rain']['1h'])))),
