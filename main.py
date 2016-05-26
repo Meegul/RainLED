@@ -4,6 +4,13 @@ import math
 import time
 import sys
 
+#-----CONFIGURATION-VARIABLES-----#
+#Configure these to suit your needs
+APIKey = ''
+latitude = ''
+longitude = ''
+#---------------------------------#
+
 #Debugging function that prints each rainstation's lats and lons
 def printCoords(array):
     for i in array:
@@ -14,13 +21,6 @@ def printCoords(array):
 #Takes rain data and determines if an LED should turn on
 def shouldTurnOn(rain):
     return 1 if rain > .1 else 0
-
-#-----CONFIGURATION-VARIABLES-----#
-#Configure these to suit your needs
-APIKey = ''
-latitude = ''
-longitude = ''
-#---------------------------------#
 
 payload = {'lat': latitude,'lon': longitude, 'cnt': 50, 'APPID': APIKey}
 url = 'http://api.openweathermap.org/data/2.5/station/find'
